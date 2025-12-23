@@ -49,7 +49,7 @@ public class ScriptPathAttributeGeneratorTests
     {
         var verifier = CSharpSourceGeneratorVerifier<ScriptPathAttributeGenerator>.MakeVerifier(
             new string[] { "Generic.cs" },
-            new string[] { "Generic(Of T)_ScriptPath.generated.cs" }
+            new string[] { "Generic_T_ScriptPath.generated.cs" }
         );
         verifier.TestState.GeneratedSources.Add(MakeAssemblyScriptTypesGeneratedSource(new string[] { "global::Generic<>" }));
         await verifier.RunAsync();
@@ -60,7 +60,7 @@ public class ScriptPathAttributeGeneratorTests
     {
         var verifier = CSharpSourceGeneratorVerifier<ScriptPathAttributeGenerator>.MakeVerifier(
             Array.Empty<string>(),
-            new string[] { "Generic(Of T)_ScriptPath.generated.cs" }
+            new string[] { "Generic_T_ScriptPath.generated.cs" }
         );
         verifier.TestState.Sources.Add(("Generic.cs", File.ReadAllText(Path.Combine(Constants.SourceFolderPath, "Generic.GD0003.cs"))));
         verifier.TestState.GeneratedSources.Add(MakeAssemblyScriptTypesGeneratedSource(new string[] { "global::Generic<>", "global::Generic<,>", "global::Generic" }));
