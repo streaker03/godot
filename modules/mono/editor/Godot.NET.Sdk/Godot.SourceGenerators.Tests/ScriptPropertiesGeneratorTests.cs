@@ -69,7 +69,7 @@ public class ScriptPropertiesGeneratorTests
     }
 
     [Fact]
-    public async void Generic()
+    public async Task Generic()
     {
         await CSharpSourceGeneratorVerifier<ScriptPropertiesGenerator>.Verify(
             "Generic.cs",

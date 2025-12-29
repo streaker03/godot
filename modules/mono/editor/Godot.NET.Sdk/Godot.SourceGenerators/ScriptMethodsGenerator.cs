@@ -291,7 +291,7 @@ namespace Godot.SourceGenerators
                 .Append(methodInfo.Name)
                 .Append(", returnVal: ");
 
-            source.AppendPropertyInfo(methodInfo.ReturnVal, "\"{0}\"")
+            source.AppendPropertyInfo(methodInfo.ReturnVal, "\"{0}\"");
 
             source.Append(", flags: (global::Godot.MethodFlags)")
                 .Append((int)methodInfo.Flags)
@@ -303,7 +303,7 @@ namespace Godot.SourceGenerators
 
                 foreach (var param in methodInfo.Arguments)
                 {
-                    source.AppendPropertyInfo(methodInfo.ReturnVal, "\"{0}\"")
+                    source.AppendPropertyInfo(methodInfo.ReturnVal, "\"{0}\"");
 
                     // C# allows colon after the last element
                     source.Append(", ");
@@ -368,20 +368,20 @@ namespace Godot.SourceGenerators
 
         private static PropertyInfo DeterminePropertyInfo(MarshalType marshalType, ITypeSymbol typeSymbol, string name)
         {
-            var memberVariantType = MarshalUtils.ConvertMarshalTypeToVariantType(marshalType);
+            VariantType? memberVariantType = MarshalUtils.ConvertMarshalTypeToVariantType(marshalType);
 
             var propUsage = PropertyUsageFlags.Default;
 
             string? className = null;
 
-            if (memberVariantType.HasValue)
+            if (memberVariantType == VariantType.Null)
             {
-                if (memberVariantType == memberVariantType.Nil)
+                if (memberVariantType == VariantType.Nil)
                 {
                     propUsage |= PropertyUsageFlags.NilIsVariant;
                 }
 
-                if (memberVariantType == memberVariantType.Object && typeSymbol is INamedTypeSymbol namedTypeSymbol)
+                if (memberVariantType == VariantType.Object && typeSymbol is INamedTypeSymbol namedTypeSymbol)
                 {
                     className = namedTypeSymbol.GetGodotScriptNativeClassName();
                 }

@@ -160,7 +160,7 @@ namespace Godot.SourceGenerators
                             }
 
                             var marshalType = MarshalUtils.ConvertManagedTypeToMarshalType(parameter.Type, typeCache);
-                            if (marshalType == null)
+                            if (marshalType == MarshalType.Null)
                             {
                                 context.ReportDiagnostic(Diagnostic.Create(
                                     Common.SignalParameterTypeNotSupportedRule,
@@ -389,7 +389,7 @@ namespace Godot.SourceGenerators
                 .Append(methodInfo.Name)
                 .Append(", returnVal: ");
 
-            source.AppendPropertyInfo(methodInfo.ReturnVal, "\"{0}\"")
+            source.AppendPropertyInfo(methodInfo.ReturnVal, "\"{0}\"");
 
             source.Append(", flags: (global::Godot.MethodFlags)")
                 .Append((int)methodInfo.Flags)
@@ -401,7 +401,7 @@ namespace Godot.SourceGenerators
 
                 foreach (var param in methodInfo.Arguments)
                 {
-                    source.AppendPropertyInfo(param, "\"{0}\"")
+                    source.AppendPropertyInfo(param, "\"{0}\"");
 
                     // C# allows colon after the last element
                     source.Append(", ");

@@ -15,7 +15,7 @@ public class ScriptSignalsGeneratorTests
     }
 
     [Fact]
-    public async void Generic()
+    public async Task Generic()
     {
         await CSharpSourceGeneratorVerifier<ScriptSignalsGenerator>.Verify(
             "Generic.cs",

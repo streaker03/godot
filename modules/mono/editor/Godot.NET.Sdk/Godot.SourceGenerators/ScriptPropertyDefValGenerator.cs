@@ -186,7 +186,7 @@ namespace Godot.SourceGenerators
                 var propertyType = property.Type;
                 var marshalType = MarshalUtils.ConvertManagedTypeToMarshalType(propertyType, typeCache);
 
-                if (marshalType == null)
+                if (marshalType == MarshalType.Null)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         Common.ExportedMemberTypeIsNotSupportedRule,
@@ -196,7 +196,7 @@ namespace Godot.SourceGenerators
                     continue;
                 }
 
-                if (!isNode && MemberHasNodeType(propertyType, marshalType.Value))
+                if (!isNode && MemberHasNodeType(propertyType, marshalType))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         Common.OnlyNodesShouldExportNodesRule,
@@ -276,7 +276,7 @@ namespace Godot.SourceGenerators
                 }
 
                 exportedMembers.Add(new ExportedPropertyMetadata(
-                    property.Name, marshalType.Value, propertyType, value));
+                    property.Name, marshalType, propertyType, value));
             }
 
             foreach (var field in exportedFields)
@@ -306,7 +306,7 @@ namespace Godot.SourceGenerators
                 var fieldType = field.Type;
                 var marshalType = MarshalUtils.ConvertManagedTypeToMarshalType(fieldType, typeCache);
 
-                if (marshalType == null)
+                if (marshalType == MarshalType.Null)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         Common.ExportedMemberTypeIsNotSupportedRule,
@@ -316,7 +316,7 @@ namespace Godot.SourceGenerators
                     continue;
                 }
 
-                if (!isNode && MemberHasNodeType(fieldType, marshalType.Value))
+                if (!isNode && MemberHasNodeType(fieldType, marshalType))
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         Common.OnlyNodesShouldExportNodesRule,
@@ -344,7 +344,7 @@ namespace Godot.SourceGenerators
                 }
 
                 exportedMembers.Add(new ExportedPropertyMetadata(
-                    field.Name, marshalType.Value, fieldType, value));
+                    field.Name, marshalType, fieldType, value));
             }
 
             // Generate GetGodotExportedProperties

@@ -75,5 +75,8 @@ namespace Godot.SourceGenerators
         GenericType,
         GenericGodotGenericDictionary,
         GenericGodotGenericArray,
+
+		// Null
+		Null
     }
 }

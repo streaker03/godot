@@ -83,7 +83,7 @@ namespace Godot.SourceGenerators
 
                 var marshalType = MarshalUtils.ConvertManagedTypeToMarshalType(typeSymbol, typeCache);
 
-                if (marshalType is null)
+                if (marshalType == MarshalType.Null)
                 {
                     context.ReportDiagnostic(Diagnostic.Create(
                         Common.GenericTypeArgumentMustBeVariantRule,

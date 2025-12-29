@@ -308,11 +308,9 @@ namespace Godot.SourceGenerators
                 return null;
 
             var retSymbol = method.ReturnType;
-            var retType = method.ReturnsVoid ?
-                null :
-                MarshalUtils.ConvertManagedTypeToMarshalType(method.ReturnType, typeCache);
+            MarshalType retType = MarshalUtils.ConvertManagedTypeToMarshalType(method.ReturnType, typeCache);
 
-            if (retType == null && !method.ReturnsVoid)
+            if (retType == MarshalType.Null && !method.ReturnsVoid)
                 return null;
 
             var parameters = method.Parameters;
@@ -323,7 +321,7 @@ namespace Godot.SourceGenerators
                 // Attempt to determine the variant type
                 .Select(p => MarshalUtils.ConvertManagedTypeToMarshalType(p.Type, typeCache))
                 // Discard parameter types that couldn't be determined (null entries)
-                .Where(t => t != null).Cast<MarshalType>().ToImmutableArray();
+                .Where(t => t != MarshalType.Null).Cast<MarshalType>().ToImmutableArray();
 
             // If any parameter type was incompatible, it was discarded so the length won't match
             if (parameters.Length > paramTypes.Length)
@@ -331,7 +329,7 @@ namespace Godot.SourceGenerators
 
             return new GodotMethodData(method, paramTypes,
                 parameters.Select(p => p.Type).ToImmutableArray(),
-                retType != null ? (retType.Value, retSymbol) : null);
+                retType != MarshalType.Null ? (retType, retSymbol) : null);
         }
 
         public static IEnumerable<GodotMethodData> WhereHasGodotCompatibleSignature(
@@ -357,10 +355,10 @@ namespace Godot.SourceGenerators
             {
                 var marshalType = MarshalUtils.ConvertManagedTypeToMarshalType(property.Type, typeCache);
 
-                if (marshalType == null)
+                if (marshalType == MarshalType.Null)
                     continue;
 
-                yield return new GodotPropertyData(property, marshalType.Value);
+                yield return new GodotPropertyData(property, marshalType);
             }
         }
 
@@ -374,10 +372,10 @@ namespace Godot.SourceGenerators
                 // TODO: We should still restore read-only fields after reloading assembly. Two possible ways: reflection or turn RestoreGodotObjectData into a constructor overload.
                 var marshalType = MarshalUtils.ConvertManagedTypeToMarshalType(field.Type, typeCache);
 
-                if (marshalType == null)
+                if (marshalType == MarshalType.Null)
                     continue;
 
-                yield return new GodotFieldData(field, marshalType.Value);
+                yield return new GodotFieldData(field, marshalType);
             }
         }
 

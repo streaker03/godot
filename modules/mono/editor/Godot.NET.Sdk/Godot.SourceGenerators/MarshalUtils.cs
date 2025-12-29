@@ -23,7 +23,7 @@ namespace Godot.SourceGenerators
             }
         }
 
-        public static VariantType? ConvertMarshalTypeToVariantType(MarshalType marshalType)
+        public static VariantType ConvertMarshalTypeToVariantType(MarshalType marshalType)
             => marshalType switch
             {
                 MarshalType.Boolean => VariantType.Bool,
@@ -81,10 +81,10 @@ namespace Godot.SourceGenerators
                 MarshalType.GodotArray => VariantType.Array,
                 MarshalType.GodotGenericDictionary => VariantType.Dictionary,
                 MarshalType.GodotGenericArray => VariantType.Array,
-                _ => null
+                _ => VariantType.Null
             };
 
-        public static MarshalType? ConvertManagedTypeToMarshalType(ITypeSymbol type, TypeCache typeCache)
+        public static MarshalType ConvertManagedTypeToMarshalType(ITypeSymbol type, TypeCache typeCache)
         {
             var specialType = type.SpecialType;
 
@@ -150,7 +150,7 @@ namespace Godot.SourceGenerators
                                 { Name: "Callable" } => MarshalType.Callable,
                                 { Name: "Signal" } => MarshalType.Signal,
                                 { Name: "Variant" } => MarshalType.Variant,
-                                _ => null
+                                _ => MarshalType.Null
                             };
                         }
                     }
@@ -159,7 +159,7 @@ namespace Godot.SourceGenerators
                         var arrayType = (IArrayTypeSymbol)type;
 
                         if (arrayType.Rank != 1)
-                            return null;
+                            return MarshalType.Null;
 
                         var elementType = arrayType.ElementType;
 
@@ -204,7 +204,7 @@ namespace Godot.SourceGenerators
                             }
                         }
 
-                        return null;
+                        return MarshalType.Null;
                     }
                     else
                     {
@@ -223,7 +223,7 @@ namespace Godot.SourceGenerators
                                     {
                                         { Name: "StringName" } => MarshalType.StringName,
                                         { Name: "NodePath" } => MarshalType.NodePath,
-                                        _ => null
+                                        _ => MarshalType.Null
                                     };
                                 case "Collections"
                                     when type.ContainingNamespace?.FullQualifiedNameOmitGlobal() == "Godot.Collections":
@@ -245,7 +245,7 @@ namespace Godot.SourceGenerators
                                                     MarshalType.GenericGodotGenericArray :
                                                     MarshalType.GodotGenericArray :
                                                 MarshalType.GodotArray,
-                                        _ => null
+                                        _ => MarshalType.Null
                                     };
                                 }
                             }
@@ -256,7 +256,7 @@ namespace Godot.SourceGenerators
                 }
             }
 
-            return null;
+            return MarshalType.Null;
         }
 
         private static bool SimpleDerivesFrom(this ITypeSymbol? type, ITypeSymbol candidateBaseType)
