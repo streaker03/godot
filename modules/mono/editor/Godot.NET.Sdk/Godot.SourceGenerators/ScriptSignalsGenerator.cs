@@ -316,7 +316,7 @@ namespace Godot.SourceGenerators
                         continue;
                     }
 
-                    source.Append($", @{paramSymbol.Name}");
+                    source.Append($", Variant.From(@{paramSymbol.Name})");
                 }
                 source.Append(");\n");
                 source.Append("    }\n");
