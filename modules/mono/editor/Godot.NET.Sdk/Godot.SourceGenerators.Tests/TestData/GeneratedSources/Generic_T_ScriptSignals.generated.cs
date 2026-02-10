@@ -22,7 +22,9 @@ partial class Generic<T>
     internal new static global::System.Collections.Generic.List<global::Godot.Bridge.MethodInfo> GetGodotSignalList()
     {
         var signals = new global::System.Collections.Generic.List<global::Godot.Bridge.MethodInfo>(1);
-        signals.Add(new(name: SignalName.GenericSignal, returnVal: global::Godot.Bridge.GenericUtils.PropertyInfoFromGenericType<T>(name: "", hint: (global::Godot.PropertyHint)0, hintString: "", usage: (global::Godot.PropertyUsageFlags)6, exported: false), flags: (global::Godot.MethodFlags)1, arguments: new() { global::Godot.Bridge.GenericUtils.PropertyInfoFromGenericType<T>(name: "var", hint: (global::Godot.PropertyHint)0, hintString: "", usage: (global::Godot.PropertyUsageFlags)6, exported: false),  }, defaultArguments: null));
+        signals.Add(new(name: SignalName.GenericSignal, returnVal: global::Godot.Bridge.GenericUtils.PropertyInfoFromGenericType<T>(name: "", hint: (global::Godot.PropertyHint)0, hintString: "", usage: 
+            (global::Godot.PropertyUsageFlags)6, exported: false), flags: (global::Godot.MethodFlags)1, arguments: new() { global::Godot.Bridge.GenericUtils.PropertyInfoFromGenericType<T>(name: "var", hint: 
+            (global::Godot.PropertyHint)0, hintString: "", usage: (global::Godot.PropertyUsageFlags)6, exported: false),  }, defaultArguments: null));
         return signals;
     }
 #pragma warning restore CS0109

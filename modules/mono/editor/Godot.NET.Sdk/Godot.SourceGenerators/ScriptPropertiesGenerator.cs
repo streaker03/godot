@@ -363,26 +363,25 @@ namespace Godot.SourceGenerators
 
         private static void AppendGroupingPropertyInfo(StringBuilder source, PropertyInfo propertyInfo)
         {
-            source.Append("        properties.Add(");
-            source.AppendPropertyInfo(propertyInfo, "PropertyName.{0}");
-            source.Append(");\n");
-        }
-
-        private static void AppendPropertyInfo(StringBuilder source, PropertyInfo propertyInfo)
-        {
             source.Append("        properties.Add(new(type: (global::Godot.Variant.Type)")
-                .Append((int?)propertyInfo.VariantType)
-                .Append(", name: PropertyName.@")
+                .Append((int)VariantType.Nil)
+                .Append(", name: \"")
                 .Append(propertyInfo.Name)
-                .Append(", hint: (global::Godot.PropertyHint)")
-                .Append((int)propertyInfo.Hint)
+                .Append("\", hint: (global::Godot.PropertyHint)")
+                .Append((int)PropertyHint.None)
                 .Append(", hintString: \"")
                 .Append(propertyInfo.HintString)
                 .Append("\", usage: (global::Godot.PropertyUsageFlags)")
                 .Append((int)propertyInfo.Usage)
-                .Append(", exported: ")
-                .Append(propertyInfo.Exported ? "true" : "false")
-                .Append("));\n");
+                .Append(", exported: true));\n");
+        }
+
+
+        private static void AppendPropertyInfo(StringBuilder source, PropertyInfo propertyInfo)
+        {
+			source.Append("        properties.Add(");
+            source.AppendPropertyInfo(propertyInfo, "PropertyName.{0}");
+            source.Append(");\n");
         }
 
         private static IEnumerable<PropertyInfo> DetermineGroupingPropertyInfo(ISymbol memberSymbol)
@@ -425,6 +424,9 @@ namespace Godot.SourceGenerators
             var exportToolButtonAttr = memberSymbol.GetAttributes()
                 .FirstOrDefault(a => a.AttributeClass?.IsGodotExportToolButtonAttribute() ?? false);
 
+			var propertySymbol = memberSymbol as IPropertySymbol;
+			var fieldSymbol = memberSymbol as IFieldSymbol;
+
             if (exportAttr != null && exportToolButtonAttr != null)
             {
                 context.ReportDiagnostic(Diagnostic.Create(
@@ -434,9 +436,6 @@ namespace Godot.SourceGenerators
                 ));
                 return null;
             }
-
-            var propertySymbol = memberSymbol as IPropertySymbol;
-            var fieldSymbol = memberSymbol as IFieldSymbol;
 
             // TODO: SOMETHING HERE ^
 
